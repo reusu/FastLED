@@ -113,7 +113,7 @@ void ESP32RMTController::init(gpio_num_t pin)
         gOnChannel[i] = NULL;
 
         // -- RMT configuration for transmission
-        rmt_config_t rmt_tx;
+        rmt_config_t rmt_tx = {};
         rmt_tx.channel = rmt_channel_t(i);
         rmt_tx.rmt_mode = RMT_MODE_TX;
         rmt_tx.gpio_num = pin;
@@ -240,7 +240,7 @@ void IRAM_ATTR ESP32RMTController::startOnChannel(int channel)
     gOnChannel[channel] = this;
 
     // -- Assign the pin to this channel
-    rmt_set_pin(mRMT_channel, RMT_MODE_TX, mPin);
+    rmt_set_gpio(mRMT_channel, RMT_MODE_TX, mPin, false);
 
     if (FASTLED_RMT_BUILTIN_DRIVER) {
         // -- Use the built-in RMT driver to send all the data in one shot
